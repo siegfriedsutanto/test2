@@ -33,9 +33,12 @@ class InventoryManager extends Component {
   }
 
   toggleEpisodeList = (e) => {
-    console.log("clicked to show episode");
+    console.log("clicked toggleEpisodeList");
     e.target.classList.toggle("open");
     var rowId = e.target.getAttribute("data-id");
+    Array.from(document.getElementsByClassName('eprow'+rowId)).forEach((el) => el.classList.toggle('closed'));
+    Array.from(document.getElementsByClassName('linesSeason'+rowId)).forEach((el) => el.classList.toggle('open'));
+    
   }
   
   parseDate = (timestamp) => {
@@ -50,12 +53,17 @@ class InventoryManager extends Component {
     return `${month} ${day}, ${year}`;
   }
 
+  countTotalEpisodes = (seasons) => {
+    let totalEpisodes = 0;
+    seasons.map((season, key) => totalEpisodes+= season.episodes.length);
+    return totalEpisodes;
+  }
+
 
   render() {
     const listTitles =  require('./titles.json');
     console.log(listTitles);
-    // var sum = array1.map(function (num, idx) {
-    //     return num + array2[idx];
+
     return (
       <Grid container className="inventoryWrapper" id="layout-content" >
         <div className="moduleName">Inventory Manager</div>
@@ -80,9 +88,15 @@ class InventoryManager extends Component {
 
                     {listTitles.filter(item => {
                                 if (this.state.searchTerm === '') {
-                                    return item;
+                                  return item;
                                 } else if (item.title_name.toLowerCase().includes(this.state.searchTerm.toLowerCase())) {
                                     return item;
+                                } else if (item.content_type == 'Series'){
+                                  let stat = item.seasons.some((season)=>season.season_name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+                                  if (stat) return item;
+                                                                    
+                                  let stat2 = item.seasons.some((season)=>season.episodes.some((episode)=> episode.episode_name.toLowerCase().includes(this.state.searchTerm.toLowerCase())))
+                                  if (stat2) return item;
                                 }
                             }).map(item=>{
                                 return (
@@ -92,8 +106,8 @@ class InventoryManager extends Component {
                                             ID={item.title_id} 
                                             name={item.title_name} 
                                             type={item.content_type}
-                                            season={item.content_type === "Series" ? item.seasons.length : "-"}
-                                            episode={item.content_type === "Series" ? 111 : "-"}
+                                            season={item.content_type === "Series" ? item.seasons.length : "--"}
+                                            episode={this.countTotalEpisodes(item.seasons)}
                                             published={this.parseDate(item.publish_timestamp)}
                                             programmable={"All Seasons"}
                                         />,
@@ -107,8 +121,8 @@ class InventoryManager extends Component {
                                         ID={item.title_id} 
                                         name={item.title_name} 
                                         type={item.content_type}
-                                        season={item.content_type === "Series" ? item.seasons.length : "-"}
-                                        episode={item.content_type === "Series" ? 111 : "-"}
+                                        season={"--"}
+                                        episode={"--"}
                                         published={this.parseDate(item.publish_timestamp)}
                                         programmable={"Single Movie"}
                                         />
