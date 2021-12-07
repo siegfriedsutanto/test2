@@ -21,7 +21,7 @@ const SelectSwitch = (props) => {
             // SyntaxError: Failed to execute 'querySelectorAll' on 'Document': '[data-parent-id=806683]' is not a valid selector.
             Array.from(document.querySelectorAll("[data-parent-id='" + id + "']")).forEach((el) => 
                 // console.log(el)
-                el.click()
+                checked != el.checked ? el.click() : ""
             );
         }
     }
