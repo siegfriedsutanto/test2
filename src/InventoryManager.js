@@ -113,7 +113,9 @@ class InventoryManager extends Component {
                                         />,
                                         <SeasonRow
                                             toggleEpisodeList = {this.toggleEpisodeList}
-                                            seasons={item.seasons} idRow={item.title_id}
+                                            seasons={item.seasons} 
+                                            idRow = {item.title_id}
+                                            parentID = {item.title_id}
                                         />
                                     ]
                                         :

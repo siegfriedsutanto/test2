@@ -34,6 +34,8 @@ const TitleRow = (props) => {
             <td width="20%" className={`col7`}>
                 <SelectSwitch 
                     value = {value}
+                    type = {props.type}
+                    id = {props.ID}
                 />
                 <div className="tdContent">{props.programmable}</div>
             </td>

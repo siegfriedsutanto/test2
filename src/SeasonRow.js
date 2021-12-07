@@ -39,7 +39,7 @@ const SeasonRow = (props) => {
                     <div className="tdContent">{season.season_name}</div>
                 </td>
                 <td width="8%" className={`col3`}>
-                    <div className="tdContent">Season</div>
+                    <div className="tdContent">Season </div>
                 </td>
                 <td width="8%" className={`col4`}>
                     <div className="tdContent">S{season.season_number}</div>
@@ -53,6 +53,9 @@ const SeasonRow = (props) => {
                 <td width="20%" className={`col7`}>
                     <SelectSwitch 
                         value = {value}
+                        type = {"Season"}
+                        id = {season.season_id}
+                        parentID = {props.parentID}
                     />
                     <div className="tdContent">All seasons</div>
                 </td>
@@ -87,6 +90,9 @@ const SeasonRow = (props) => {
                             <td  className={`col7`}>
                                 <SelectSwitch 
                                     value = {value}
+                                    type = {"Episode"}
+                                    id = {episode.episode_id}
+                                    parentID = {season.season_id}
                                 />
                                 <div className="tdContent">Per episode</div>
                             </td>
